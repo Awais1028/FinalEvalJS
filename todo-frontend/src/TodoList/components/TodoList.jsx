@@ -1,7 +1,7 @@
 import TodoItem from "../../TodoItem/components/TodoItem";
 
-export default function TodoList({ Todos, onDelete, onChange }) {
-  return Todos.map((todo) => {
+export default function TodoList({ todos, onDelete, onChange }) {
+  return todos.map((todo) => {
     return (
       <TodoItem
         key={todo._id}

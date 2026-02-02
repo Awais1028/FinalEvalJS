@@ -15,7 +15,6 @@ const TextBoxWithReadMore = ({ text, truncateLength = 180, completed }) => {
   return (
     <div
       style={{
-        border: "1px solid #ccc",
         padding: "10px",
         margin: "10px",
         whiteSpace: "pre-wrap",

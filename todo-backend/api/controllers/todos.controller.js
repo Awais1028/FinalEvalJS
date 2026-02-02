@@ -1,26 +1,26 @@
-const TODO = require("../../todo.model");
+const Todo = require("../../todo.model");
 
 const addT = async (todoReceived) => {
-  const newtodo = new TODO(todoReceived);
+  const newtodo = new Todo(todoReceived);
   await newtodo.save();
   return newtodo;
 };
 
 //deletedAt
 const updateDeletionStatus = async (id, deletedAt) => {
-  await TODO.findByIdAndUpdate(id, {
+  await Todo.findByIdAndUpdate(id, {
     $set: { deletedAt: deletedAt },
   });
 };
 
 const updateDescription = async (id, description) => {
-  return await TODO.findByIdAndUpdate(id, {
+  return await Todo.findByIdAndUpdate(id, {
     $set: { todoDescription: description },
   });
 };
 
 const updateStatus = async (id, completedStatus) => {
-  return await TODO.findByIdAndUpdate(id, {
+  return await Todo.findByIdAndUpdate(id, {
     $set: { completed: completedStatus },
   });
 };
@@ -34,10 +34,10 @@ const get = async ({ filterVal, sort_by, limit, page }) => {
   console.log(`F"${filterVal} S"${sort_by} L"${limit} P"${page}`);
   if (filterVal === "All") {
     try {
-      const totalItems = await TODO.countDocuments();
+      const totalItems = await Todo.countDocuments();
       console.log("TOTAL ITEMS********** = ", totalItems, "^^^^^^");
       const totalPages = Math.ceil(totalItems / limit);
-      const todos = await TODO.find()
+      const todos = await Todo.find()
         .sort({ [sort_by]: -1 })
         .skip((page - 1) * limit) // Skip previous pages
         .limit(limit) // Limit results per page
@@ -47,20 +47,20 @@ const get = async ({ filterVal, sort_by, limit, page }) => {
       console.error(err);
     }
   } else if (filterVal === "Active") {
-    const totalItems = await TODO.countDocuments({ deletedAt: "N/A" });
+    const totalItems = await Todo.countDocuments({ deletedAt: "N/A" });
     const totalPages = Math.ceil(totalItems / limit);
-    const todos = await TODO.find({ deletedAt: "N/A" })
+    const todos = await Todo.find({ deletedAt: "N/A" })
       .sort({ [sort_by]: -1 })
       .skip((page - 1) * limit) // Skip previous pages
       .limit(limit) // Limit results per page
       .exec();
     return { todos: todos, totalPages: totalPages };
   } else if (filterVal === "Deleted") {
-    const totalItems = await TODO.countDocuments({
+    const totalItems = await Todo.countDocuments({
       deletedAt: { $ne: "N/A" },
     });
     const totalPages = Math.ceil(totalItems / limit);
-    const todos = await TODO.find({ deletedAt: { $ne: "N/A" } })
+    const todos = await Todo.find({ deletedAt: { $ne: "N/A" } })
       .sort({ [sort_by]: -1 })
       .skip((page - 1) * limit) // Skip previous pages
       .limit(limit) // Limit results per page

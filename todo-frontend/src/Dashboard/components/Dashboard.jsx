@@ -16,23 +16,23 @@ import { AddNewTodo } from "../utils/helper";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-export default function FixingTheDashboard() {
+export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesCount, setPagesCount] = useState(0);
   const [filterVal, setFilterVal] = useState("All");
-  const [Todos, setTODOs] = useState([]); // fix naming
+  const [todos, setTodos] = useState([]); // fix naming
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const handleAddNewItem = async (newItemDescription) => {
-    const { newError, newTodos } = await AddNewTodo(newItemDescription, Todos);
+    const { newError, newTodos } = await AddNewTodo(newItemDescription, todos);
     if (error !== "") setError(newError);
     else if (
       currentPage === 1 &&
       (filterVal === "All" || filterVal === "Active")
     ) {
       const updatedTodos = newTodos.slice(0, -1); //Adding new and keeping 10 items per page check
-      setTODOs(updatedTodos);
+      setTodos(updatedTodos);
       setError("");
     }
   };
@@ -67,7 +67,7 @@ export default function FixingTheDashboard() {
 
         const data = await response.json();
         console.log("pages Count:", data.totalPages);
-        setTODOs(sortDataByDateDescending(data.todos));
+        setTodos(sortDataByDateDescending(data.todos));
         setPagesCount(data.totalPages);
       } catch (err) {
         console.error("Caught error:", err.message);
@@ -81,19 +81,19 @@ export default function FixingTheDashboard() {
   }, [filterVal, currentPage]);
 
   const changeTodoStatusLocally = (newTodo) => {
-    const newTodos = Todos.map((todo) => {
+    const newTodos = todos.map((todo) => {
       if (newTodo._id === todo._id) {
         return newTodo;
       }
       return todo;
     });
 
-    setTODOs(sortDataByDateDescending(newTodos));
+    setTodos(sortDataByDateDescending(newTodos));
   };
 
   //Check Box (Completed, Uncompleted Status Change)
   const handleCheckBoxChange = async (targetId) => {
-    const newTodo = Todos.find((todo) => todo._id === targetId);
+    const newTodo = todos.find((todo) => todo._id === targetId);
     console.log("new todo completed before", newTodo.completed);
     newTodo.completed = !newTodo.completed;
     console.log("new todo completed now", newTodo.completed);
@@ -101,7 +101,7 @@ export default function FixingTheDashboard() {
     changeTodoStatusLocally(newTodo);
     console.log(
       "Does todo Status Change",
-      Todos.filter((todo) => todo._id === targetId),
+      todos.filter((todo) => todo._id === targetId),
     );
     try {
       const response = await fetch(VITE_API_URL, {
@@ -128,7 +128,7 @@ export default function FixingTheDashboard() {
   const handleDeleteButton = async (targetId) => {
     const _id = targetId.split("DelBtn").join("");
     const deletedAt = new Date().toISOString();
-    const targetTodo = Todos.find((todo) => todo._id === _id);
+    const targetTodo = todos.find((todo) => todo._id === _id);
     if (targetTodo.deletedAt !== "N/A") return;
     try {
       const response = await fetch(VITE_API_URL, {
@@ -141,7 +141,7 @@ export default function FixingTheDashboard() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const newTODOs = Todos.map((todo) => {
+      const newTodos = todos.map((todo) => {
         if (todo._id === _id) {
           const newTodo = { ...todo };
           newTodo.deletedAt = deletedAt;
@@ -149,8 +149,8 @@ export default function FixingTheDashboard() {
         }
         return todo;
       });
-      console.log("newtodos after deletion are:", newTODOs);
-      setTODOs(sortDataByDateDescending(newTODOs));
+      console.log("newTodos after deletion are:", newTodos);
+      setTodos(sortDataByDateDescending(newTodos));
     } catch (err) {
       setError(err.message);
       console.error("There was an error!", err);
@@ -217,9 +217,9 @@ export default function FixingTheDashboard() {
             <HeadingBar />
           </TableHead>
           <TableBody>
-            {console.log(Todos)}
+            {console.log(todos)}
             <TodoList
-              Todos={Todos}
+              todos={todos}
               onDelete={handleDeleteButton}
               onChange={handleCheckBoxChange}
             />
