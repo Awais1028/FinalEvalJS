@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const usersController = require('../controllers/todos.controller'); // Import controller
-const { deleteTodo } = require('../controllers/todos.controller');
+const Controller = require("../controllers/todos.controller"); // Import controller
+const { deleteTodo } = require("../controllers/todos.controller");
 
 // Define a GET route for /api/todos
-router.get('/', usersController.getAllTodos);
+router.get("/", Controller.getAll);
 
 // Define a POST route for /api/todos
-router.put('/', usersController.updateATodo);
+router.put("/", Controller.update);
 
-router.post('/', usersController.postATodo);
+router.post("/", Controller.post);
 
-router.delete('/',deleteTodo)
+router.patch("/", deleteTodo);
 module.exports = router;

@@ -1,0 +1,18 @@
+import TodoItem from "../../TodoItem/components/TodoItem";
+
+export default function TodoList({ Todos, onDelete, onChange }) {
+  return Todos.map((todo) => {
+    return (
+      <TodoItem
+        key={todo._id}
+        id={todo._id}
+        description={todo.description}
+        createdAt={todo.createdAt}
+        deletedAt={todo.deletedAt}
+        completed={todo.completed}
+        handleCheckBoxChange={onChange}
+        handleDeleteButton={onDelete}
+      ></TodoItem>
+    );
+  });
+}

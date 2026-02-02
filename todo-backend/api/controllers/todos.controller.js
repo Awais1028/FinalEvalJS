@@ -1,44 +1,112 @@
-const TODO = require('../../todo.model');
+const TODO = require("../../todo.model");
 
-const addTodo = async (todoReceived)=>{
-    const newtodo = new TODO (todoReceived)
-    await newtodo.save()
-    return newtodo
-}
-const updateTodoDescription = async(id, description)=>{
-    await TODO.findByIdAndUpdate(id, {$set:{todoDescription:description}})
-}
-const updateTodoStatus = async(id, completedStatus)=>{
-    await TODO.findByIdAndUpdate(id, {$set:{completed:completedStatus}})
-}
-const deleteTodo = async(req, res)=>{
-    console.log("in deletion at backend: id is :",req.body._id)
-    await TODO.findByIdAndDelete(req.body._id)
-    res.send("Deletion Done!")
-}
-const getTodos = async ()=>{
-    const todos = await TODO.find()
-    return todos;
-}
-const getAllTodos = async (req,res)=>{
-    res.send(await getTodos());
-}
-const postATodo = async(req,res)=>{
-    const newTodo = await addTodo(req.body)
-    console.log('In Post: Object Received: ', newTodo)
-    res.send(newTodo)
-}
-const updateATodo = async (req,res)=>{
-    console.log("whole Obj: ", req.body)
-    await updateTodoDescription(req.body._id,req.body.todoDescription)
-    await updateTodoStatus  (req.body._id,req.body.completed)
-    console.log('post done')
-    res.send({message:`Done!!!`})
-}
+const addT = async (todoReceived) => {
+  const newtodo = new TODO(todoReceived);
+  await newtodo.save();
+  return newtodo;
+};
+
+//deletedAt
+const updateDeletionStatus = async (id, deletedAt) => {
+  await TODO.findByIdAndUpdate(id, {
+    $set: { deletedAt: deletedAt },
+  });
+};
+
+const updateDescription = async (id, description) => {
+  return await TODO.findByIdAndUpdate(id, {
+    $set: { todoDescription: description },
+  });
+};
+
+const updateStatus = async (id, completedStatus) => {
+  return await TODO.findByIdAndUpdate(id, {
+    $set: { completed: completedStatus },
+  });
+};
+
+const deleteTodo = async (req, res) => {
+  console.log("in deletion at backend: id is :", req.body._id);
+  console.log("Deletion status is this", req.body.deletedAt);
+  res.send(await updateDeletionStatus(req.body._id, req.body.deletedAt));
+};
+const get = async ({ filterVal, sort_by, limit, page }) => {
+  console.log(`F"${filterVal} S"${sort_by} L"${limit} P"${page}`);
+  if (filterVal === "All") {
+    try {
+      const totalItems = await TODO.countDocuments();
+      console.log("TOTAL ITEMS********** = ", totalItems, "^^^^^^");
+      const totalPages = Math.ceil(totalItems / limit);
+      const todos = await TODO.find()
+        .sort({ [sort_by]: -1 })
+        .skip((page - 1) * limit) // Skip previous pages
+        .limit(limit) // Limit results per page
+        .exec();
+      return { todos: todos, totalPages: totalPages };
+    } catch (err) {
+      console.error(err);
+    }
+  } else if (filterVal === "Active") {
+    const totalItems = await TODO.countDocuments({ deletedAt: "N/A" });
+    const totalPages = Math.ceil(totalItems / limit);
+    const todos = await TODO.find({ deletedAt: "N/A" })
+      .sort({ [sort_by]: -1 })
+      .skip((page - 1) * limit) // Skip previous pages
+      .limit(limit) // Limit results per page
+      .exec();
+    return { todos: todos, totalPages: totalPages };
+  } else if (filterVal === "Deleted") {
+    const totalItems = await TODO.countDocuments({
+      deletedAt: { $ne: "N/A" },
+    });
+    const totalPages = Math.ceil(totalItems / limit);
+    const todos = await TODO.find({ deletedAt: { $ne: "N/A" } })
+      .sort({ [sort_by]: -1 })
+      .skip((page - 1) * limit) // Skip previous pages
+      .limit(limit) // Limit results per page
+      .exec();
+    return { todos: todos, totalPages: totalPages };
+  }
+};
+const getAll = async (req, res, next) => {
+  const validFilters = ["All", "Active", "Deleted"];
+  const filtervalue = req.query.filterVal;
+  console.log("filter Value before", filtervalue);
+  if (!validFilters.includes(filtervalue)) {
+    console.log("entering valid check");
+    return res.status(400).json({
+      error: "Bad Request",
+      message:
+        'The "term" query parameter is required and cannot be null or empty.',
+    });
+  }
+  try {
+    console.log("filterValue", filtervalue);
+    const response = await get(req.query);
+    console.log(response);
+    res.status(200).json(response);
+  } catch (error) {
+    // Pass the error to the global error handler
+    next(error);
+  }
+};
+const post = async (req, res) => {
+  console.log("obj received at post", req.body);
+  const newTodo = await addT(req.body);
+  console.log("In Post: Object Received: ", newTodo);
+  res.status(200).send(newTodo);
+};
+const update = async (req, res) => {
+  console.log("whole Obj: ", req.body);
+  await updateDescription(req.body._id, req.body.description);
+  await updateStatus(req.body._id, req.body.completed);
+  console.log("post done");
+  res.send({ message: `Done!!!` });
+};
 
 module.exports = {
-    getAllTodos,
-    updateATodo,
-    postATodo,
-    deleteTodo
+  getAll,
+  update,
+  post,
+  deleteTodo,
 };

@@ -1,0 +1,22 @@
+.inline-printing {
+  min-width: "100px";
+  margin: "10px";
+  display: "inline-block";
+  vertical-align: "middle";
+}
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+  background-color: #442675;
+}
+
+.flex-item-smaller {
+  flex: 0 0 auto;
+  padding: 100px 10px 0px 10px;
+}
+.flex-item-larger {
+  flex: 1;
+  min-height: 10px 10px 0px 10px;
+}
