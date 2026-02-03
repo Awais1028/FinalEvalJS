@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import TodoList from "../../TodoList/components/TodoList";
 import HeadingBar from "../../HeadingBar/components/HeadingBar";
-import AddBar from "../../AddMenu/components/AddMenu";
 import { sortDataByDateDescending } from "../../utils/helper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
-import MenuBar from "../../FilterMenu/components/FilterMenu";
 import SnackBarToast from "../../SnackBarToast/components/SnackBarToast";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import { AddNewTodo } from "../utils/helper";
 import NavBar from "../../NavBar/components/NavBar";
+import DashboardPagination from "../../DashboardPagination/components/DashboardPagination";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -203,28 +202,11 @@ export default function Dashboard() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        p={2}
-        border="1px dashed grey"
-      >
-        <Pagination
-          sx={{
-            width: "270px",
-            "& .MuiPaginationItem-root": {
-              color: "black", // Color for inactive pages (and active initially)
-            },
-          }}
-          color="primary"
-          siblingCount={0}
-          defaultPage={1}
-          boundaryCount={1}
-          count={pagesCount}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-      </Box>
+      <DashboardPagination
+        count={pagesCount}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
     </>
   );
 }
