@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
-import "../styles/AddBar.css";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import PropTypes from "prop-types";
+import TextField from "@mui/material/TextField";
 
 function Item(props) {
   const { sx, ...other } = props;
@@ -54,11 +54,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 6,
+  p: 4,
   borderRadius: "16px",
 };
 
@@ -89,7 +89,7 @@ export default function AddBar({ onSendData }) {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-  
+
   return (
     <div>
       <Button
@@ -107,15 +107,33 @@ export default function AddBar({ onSendData }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <>
-          <Box sx={style}>
+        <Box sx={style}>
+          <Box
+            sx={{
+              alignSelf: "center",
+              p: 1,
+              m: 1,
+              bgcolor: "background.paper",
+              borderRadius: 1,
+            }}
+          >
+            <Box
+              sx={{
+                color: "#007bff",
+                fontSize: "1.5rem",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              Add New Item
+            </Box>
+
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 justifyContent: "space-around",
-                alignItems: "center",
-                p: 1,
+                p: 0.5,
                 m: 1,
                 bgcolor: "background.paper",
                 borderRadius: 1,
@@ -126,86 +144,28 @@ export default function AddBar({ onSendData }) {
                   p: 2,
                   color: "grey",
                   border: "2px solid grey",
-                  borderRadius: "16px",
+                  borderRadius: "8px",
                   fontSize: "1.5rem",
-                  width: "100%",
+                  height: "auto",
+                  width: "80%",
                   textAlign: "center",
                 }}
               >
-                Add New Item
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  p: 1,
-                  m: 1,
-                  bgcolor: "background.paper",
-                  borderRadius: 1,
-                }}
-              >
-                <Box
-                  sx={{
-                    p: 2,
-                    color: "grey",
-                    border: "2px solid grey",
-                    borderRadius: "8px",
-                    fontSize: "1.5rem",
-                    width: "80%",
-                    textAlign: "center",
+                <TextField
+                  id="outlined-basic"
+                  label="Please Enter Name of Todo"
+                  value={inputValue}
+                  sx={{ width: "100%" }}
+                  variant="outlined"
+                  slotProps={{
+                    htmlInput: {
+                      maxLength: 150,
+                    },
                   }}
-                >
-                  <input
-                    name="inputBox"
-                    maxLength={200}
-                    type="text"
-                    style={{ paddingLeft: "10px" }}
-                    placeholder="Please Enter Name of Todo"
-                    className="flex-item-left-addbar"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    p: 2,
-                    color: "grey",
-                    border: "2px solid grey",
-                    borderRadius: "8px",
-                    fontSize: "1.5rem",
-                    width: "20%",
-                    textAlign: "center",
-                  }}
-                >
-                  Item 2
-                </Box>
+                  onChange={handleInputChange}
+                />
               </Box>
-              <Item>The Error Msg</Item>
-            </Box>
-            <button
-              onClick={handleClose}
-              style={{ position: "absolute", top: "10px", right: "10px" }}
-            >
-              &times;
-            </button>
-
-            <h3 className="flex-item-addbar" style={{ color: "#2380d7" }}>
-              Add New Todo
-            </h3>
-
-            <div
-              className="flex-container-addbar"
-              style={{
-                flexDirection: "row",
-                minWidth: "100%",
-                minHeight: "10px",
-                marginBottom: "30px",
-              }}
-            >
               <Button
-                className="flex-item-right-addbar"
                 onClick={() => {
                   if (inputValue === "") {
                     console.log("toast printing");
@@ -219,16 +179,21 @@ export default function AddBar({ onSendData }) {
               >
                 Add
               </Button>
-            </div>
-
-            <div
-              className="flex-item-addbar"
-              style={{ justifyContent: "space-around" }}
+            </Box>
+            <Box
+              sx={{
+                color: "grey",
+                fontSize: "1.5rem",
+                width: "100%",
+                height: 36,
+                textAlign: "center",
+              }}
             >
               <Snackbar
                 open={openSnackbar}
                 autoHideDuration={3000}
                 onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               >
                 <Alert
                   onClose={handleCloseSnackbar}
@@ -239,9 +204,15 @@ export default function AddBar({ onSendData }) {
                   Please Enter the Todo Title
                 </Alert>
               </Snackbar>
-            </div>
+            </Box>
           </Box>
-        </>
+          <button
+            onClick={handleClose}
+            style={{ position: "absolute", top: "10px", right: "10px" }}
+          >
+            &times;
+          </button>
+        </Box>
       </Modal>
     </div>
   );
