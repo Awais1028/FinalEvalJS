@@ -1,8 +1,12 @@
 // TextBoxWithReadMore.jsx
 import React, { useState } from "react";
-import Modal from "./Modal";
+import Modal from "./components/Modal";
 
-const TextBoxWithReadMore = ({ text, truncateLength = 180, completed }) => {
+export default function DetailsModal({
+  text,
+  truncateLength = 180,
+  completed,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isTruncated = text.length > truncateLength;
   const truncatedText = isTruncated
@@ -50,6 +54,4 @@ const TextBoxWithReadMore = ({ text, truncateLength = 180, completed }) => {
       </Modal>
     </div>
   );
-};
-
-export default TextBoxWithReadMore;
+}

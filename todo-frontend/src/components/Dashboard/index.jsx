@@ -1,39 +1,42 @@
 import { useEffect, useState } from "react";
-import TodoList from "../../TodoList/components/TodoList";
-import HeadingBar from "../../HeadingBar/components/HeadingBar";
+import TodoList from "../TodoList";
+import TodoListHeader from "../TodoListHeader";
 import { sortDataByDateDescending } from "../../utils/helper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
-import SnackBarToast from "../../SnackBarToast/components/SnackBarToast";
-import Pagination from "@mui/material/Pagination";
-import Box from "@mui/material/Box";
-import { AddNewTodo } from "../utils/helper";
-import NavBar from "../../NavBar/components/NavBar";
-import DashboardPagination from "../../DashboardPagination/components/DashboardPagination";
+import { AddNewTodo } from "./utils/helper";
+import Navbar from "../Navbar";
+import Pagination from "../Pagination";
+import AlertDialog from "../AlertDialog";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export default function Dashboard() {
+  const [alert, setAlert] = useState("");
+  const [alertType, setAlertType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesCount, setPagesCount] = useState(0);
   const [filterVal, setFilterVal] = useState("All");
   const [todos, setTodos] = useState([]); // fix naming
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const handleAddNewItem = async (newItemDescription) => {
-    const { newError, newTodos } = await AddNewTodo(newItemDescription, todos);
-    if (error !== "") setError(newError);
-    else if (
+    const { newAlert, newAlertType, newTodos } = await AddNewTodo(
+      newItemDescription,
+      todos,
+    );
+    setAlert(newAlert);
+    setAlertType(newAlertType);
+    if (
+      newAlertType !== "error" &&
       currentPage === 1 &&
       (filterVal === "All" || filterVal === "Active")
     ) {
       const updatedTodos = newTodos.slice(0, -1); //Adding new and keeping 10 items per page check
       setTodos(updatedTodos);
-      setError("");
     }
   };
 
@@ -71,7 +74,8 @@ export default function Dashboard() {
         setPagesCount(data.totalPages);
       } catch (err) {
         console.error("Caught error:", err.message);
-        setError(err.message); // This updates your UI
+        setAlert(err.message); // This updates your UI
+        setAlertType("error");
       } finally {
         setLoading(false);
       }
@@ -118,7 +122,8 @@ export default function Dashboard() {
       //changeTodoStatusLocally(targetId);
       newTodo.completed = !newTodo.completed;
       changeTodoStatusLocally(newTodo);
-      setError(err.message);
+      setAlert(err.message); // This updates your UI
+      setAlertType("error");
       console.error("There was an error!", err);
     }
     console.log("******end****Handle Check is Exiting*************");
@@ -152,7 +157,8 @@ export default function Dashboard() {
       console.log("newTodos after deletion are:", newTodos);
       setTodos(sortDataByDateDescending(newTodos));
     } catch (err) {
-      setError(err.message);
+      setAlert(err.message); // This updates your UI
+      setAlertType("error");
       console.error("There was an error!", err);
     }
   };
@@ -166,31 +172,33 @@ export default function Dashboard() {
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+
   //UseEffects
   if (loading) return <h3>Loading.......</h3>;
 
   return (
     <>
-      {error !== "" ? (
-        <SnackBarToast
-          type="error"
-          message={error}
-          setError={setError}
-        ></SnackBarToast>
+      {alert !== "" ? (
+        <AlertDialog
+          type={alertType}
+          message={alert}
+          setAlert={setAlert}
+          setAlertType={setAlertType}
+        ></AlertDialog>
       ) : (
         ""
       )}
 
-      <NavBar
+      <Navbar
         handleAddNewItem={handleAddNewItem}
         setFilterVal={setFilterVal}
         resetPage={resetPage}
-      ></NavBar>
+      ></Navbar>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <HeadingBar />
+            <TodoListHeader />
           </TableHead>
           <TableBody>
             {console.log(todos)}
@@ -202,7 +210,7 @@ export default function Dashboard() {
           </TableBody>
         </Table>
       </TableContainer>
-      <DashboardPagination
+      <Pagination
         count={pagesCount}
         page={currentPage}
         onChange={handlePageChange}

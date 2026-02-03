@@ -1,4 +1,3 @@
-import "../../TodoList/components/TodoList";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 const styleHead = {
@@ -8,7 +7,7 @@ const styleHead = {
   fontSize: "1.25rem",
 };
 
-export default function HeadingBar() {
+export default function TodoListHeader() {
   return (
     <TableRow>
       <TableCell sx={[styleHead, { width: "15%" }]} align="center">

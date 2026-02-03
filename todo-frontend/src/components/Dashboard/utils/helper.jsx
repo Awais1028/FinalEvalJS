@@ -1,4 +1,4 @@
-import { sortDataByDateDescending } from "../../utils/helper";
+import { sortDataByDateDescending } from "../../../utils/helper";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -21,7 +21,6 @@ export const AddNewTodo = async (newItemDescription, prevTodos) => {
       }), // Convert data to JSON string
     });
 
-    console.log("success1");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -29,10 +28,14 @@ export const AddNewTodo = async (newItemDescription, prevTodos) => {
     const data = await promise;
     console.log("Data from Post Api Call:", data);
     const newTodos = sortDataByDateDescending([...prevTodos, data]);
-    return { newError: "", newTodos: newTodos };
+    return {
+      newAlert: "success",
+      newAlert: "Todo has been added successfully!",
+      newTodos: newTodos,
+    };
   } catch (err) {
     console.error("There was an error!", err);
-    return { newError: err.message, newTodos: prevTodos };
+    return { newAlert: "error", newAlert: err.message, newTodos: prevTodos };
   }
 };
 

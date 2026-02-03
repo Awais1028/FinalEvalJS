@@ -62,7 +62,7 @@ const style = {
   borderRadius: "16px",
 };
 
-export default function AddBar({ onSendData }) {
+export default function CreateAction({ onSendData }) {
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);

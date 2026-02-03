@@ -1,7 +1,8 @@
-import AddBar from "../../AddMenu/components/AddMenu";
-import MenuBar from "../../FilterMenu/components/FilterMenu";
+import CreateAction from "../CreateAction";
+import Filters from "../Filters";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+
 export default function NavBar({ handleAddNewItem, setFilterVal, resetPage }) {
   return (
     <Box
@@ -16,10 +17,9 @@ export default function NavBar({ handleAddNewItem, setFilterVal, resetPage }) {
         bgcolor: "#442675",
       }}
     >
-      <AddBar onSendData={handleAddNewItem} />
+      <CreateAction onSendData={handleAddNewItem} />
       <Typography variant="h4">Todo App</Typography>
-
-      <MenuBar onSendData={setFilterVal} resetPage={resetPage} />
+      <Filters onSendData={setFilterVal} resetPage={resetPage} />
     </Box>
   );
 }

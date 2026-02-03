@@ -1,4 +1,4 @@
-import TodoItem from "../../TodoItem/components/TodoItem";
+import TodoItem from "../TodoItem";
 
 export default function TodoList({ todos, onDelete, onChange }) {
   return todos.map((todo) => {

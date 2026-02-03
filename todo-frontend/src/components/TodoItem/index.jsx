@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { formatRelativeToNow } from "../../utils/helper";
-import TextBoxWithReadMore from "../../TextBoxWithModal/components/TextBoxWithReadMore";
+import DetailsModal from "../DetailsModal";
 
 export default function TodoItem({
   id,
@@ -13,8 +13,6 @@ export default function TodoItem({
   handleCheckBoxChange,
   handleDeleteButton,
 }) {
-
-  
   return (
     <TableRow
       key={id}
@@ -43,10 +41,10 @@ export default function TodoItem({
       </TableCell>
 
       <TableCell sx={{ width: "700px" }} component="th" scope="row">
-        <TextBoxWithReadMore
+        <DetailsModal
           completed={deletedAt === "N/A" ? completed : false}
           text={description}
-        ></TextBoxWithReadMore>
+        ></DetailsModal>
       </TableCell>
       <TableCell
         align="center"

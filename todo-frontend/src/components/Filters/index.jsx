@@ -29,7 +29,7 @@ const customTheme = createTheme({
   },
 });
 
-export default function FilterMenu({ onSendData, resetPage }) {
+export default function Filters({ onSendData, resetPage }) {
   const [labelValue, setLabelValue] = useState("ALL");
   const [inputValue, setInputValue] = useState("All");
 
