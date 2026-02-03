@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoList from "../../TodoList/components/TodoList";
 import HeadingBar from "../../HeadingBar/components/HeadingBar";
-import AddBar from "../../AddBar/components/AddMenu";
+import AddBar from "../../AddMenu/components/AddMenu";
 import { sortDataByDateDescending } from "../../utils/helper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
