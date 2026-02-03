@@ -29,7 +29,7 @@ const customTheme = createTheme({
   },
 });
 
-export default function MenuBar({ onSendData, resetPage }) {
+export default function FilterMenu({ onSendData, resetPage }) {
   const [labelValue, setLabelValue] = useState("ALL");
   const [inputValue, setInputValue] = useState("All");
 
@@ -40,7 +40,6 @@ export default function MenuBar({ onSendData, resetPage }) {
     resetPage();
     onSendData(newValue);
   };
-
   return (
     <Box sx={{ minWidth: 120 }}>
       <ThemeProvider theme={customTheme}>

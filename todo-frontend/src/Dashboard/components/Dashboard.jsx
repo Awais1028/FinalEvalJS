@@ -8,11 +8,12 @@ import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
-import MenuBar from "../../MenuBar/components/MenuBar";
+import MenuBar from "../../FilterMenu/components/FilterMenu";
 import SnackBarToast from "../../SnackBarToast/components/SnackBarToast";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import { AddNewTodo } from "../utils/helper";
+import NavBar from "../../NavBar/components/NavBar";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -181,36 +182,12 @@ export default function Dashboard() {
         ""
       )}
 
-      <div style={{ width: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            p: 1.5,
-            bgcolor: "#442675",
-          }}
-        >
-          <AddBar onSendData={handleAddNewItem} />
-          <MenuBar onSendData={setFilterVal} resetPage={resetPage} />
-          <Pagination
-            sx={{
-              width: "270px",
-              "& .MuiPaginationItem-root": {
-                color: "white", // Color for inactive pages (and active initially)
-              },
-            }}
-            color="primary"
-            siblingCount={0}
-            defaultPage={1}
-            boundaryCount={1}
-            count={pagesCount}
-            page={currentPage}
-            onChange={handlePageChange}
-          />
-        </Box>
-      </div>
+      <NavBar
+        handleAddNewItem={handleAddNewItem}
+        setFilterVal={setFilterVal}
+        resetPage={resetPage}
+      ></NavBar>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -226,6 +203,28 @@ export default function Dashboard() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        p={2}
+        border="1px dashed grey"
+      >
+        <Pagination
+          sx={{
+            width: "270px",
+            "& .MuiPaginationItem-root": {
+              color: "black", // Color for inactive pages (and active initially)
+            },
+          }}
+          color="primary"
+          siblingCount={0}
+          defaultPage={1}
+          boundaryCount={1}
+          count={pagesCount}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+      </Box>
     </>
   );
 }
