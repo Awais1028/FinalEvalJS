@@ -26,14 +26,14 @@ export const AddNewTodo = async (newItemDescription, previousTodoItems) => {
     const data = await promise;
     const newTodoItems = sortDataByDateDescending([...previousTodoItems, data]);
     return {
-      newAlert: "success",
+      newAlertType: "success",
       newAlert: "Todo has been added successfully!",
       newTodoItems: newTodoItems,
     };
   } catch (err) {
     console.error("There was an error!", err);
     return {
-      newAlert: "error",
+      newAlertType: "error",
       newAlert: err.message,
       newTodoItems: previousTodoItems,
     };

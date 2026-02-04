@@ -22,7 +22,7 @@ export default function TodoListHeader() {
       </TableCell>
       <TableCell sx={[styleHead, { width: "10%" }]} align="center">
         Actions
-      </TableCell>{" "}
+      </TableCell>
     </TableRow>
   );
 }

@@ -53,7 +53,7 @@ export function useTodoItems(filterValue, currentPage, setAlert, setAlertType) {
   }, [filterValue, currentPage]);
 
   const handleAddNewItem = async (newItemDescription) => {
-    const { newAlert, newAlertType, newTodoItems } = await AddNewTodo(
+    const { newAlertType, newAlert, newTodoItems } = await AddNewTodo(
       newItemDescription,
       todoItems,
     );
