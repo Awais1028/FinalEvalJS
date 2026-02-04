@@ -2,11 +2,9 @@ import { sortDataByDateDescending } from "../../../utils/helper";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-export const AddNewTodo = async (newItemDescription, prevTodos) => {
+export const AddNewTodo = async (newItemDescription, previousTodoItems) => {
   if (newItemDescription === "") return;
-  console.log("Add Click is working!  ");
   try {
-    console.log("trying to get");
     const response = await fetch(VITE_API_URL, {
       method: "POST", // Specify the method
       headers: {
@@ -26,16 +24,19 @@ export const AddNewTodo = async (newItemDescription, prevTodos) => {
     }
     const promise = await response.json();
     const data = await promise;
-    console.log("Data from Post Api Call:", data);
-    const newTodos = sortDataByDateDescending([...prevTodos, data]);
+    const newTodoItems = sortDataByDateDescending([...previousTodoItems, data]);
     return {
       newAlert: "success",
       newAlert: "Todo has been added successfully!",
-      newTodos: newTodos,
+      newTodoItems: newTodoItems,
     };
   } catch (err) {
     console.error("There was an error!", err);
-    return { newAlert: "error", newAlert: err.message, newTodos: prevTodos };
+    return {
+      newAlert: "error",
+      newAlert: err.message,
+      newTodoItems: previousTodoItems,
+    };
   }
 };
 

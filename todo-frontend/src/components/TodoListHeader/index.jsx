@@ -10,10 +10,7 @@ const styleHead = {
 export default function TodoListHeader() {
   return (
     <TableRow>
-      <TableCell sx={[styleHead, { width: "15%" }]} align="center">
-        Check
-      </TableCell>
-      <TableCell sx={[styleHead, { width: "40%" }]} align="center">
+      <TableCell sx={[styleHead, { width: "40%" }]} align="left">
         Title
       </TableCell>
       <TableCell sx={[styleHead, { width: "15%" }]} align="center">
@@ -22,6 +19,9 @@ export default function TodoListHeader() {
       <TableCell sx={[styleHead, { width: "15%" }]} align="center">
         Removed On
       </TableCell>
+      <TableCell sx={[styleHead, { width: "15%" }]} align="center">
+        Check
+      </TableCell>{" "}
       <TableCell sx={[styleHead, { width: "15%" }]} align="center">
         Delete
       </TableCell>

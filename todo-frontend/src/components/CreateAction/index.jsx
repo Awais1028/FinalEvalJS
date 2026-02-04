@@ -168,7 +168,6 @@ export default function CreateAction({ onSendData }) {
               <Button
                 onClick={() => {
                   if (inputValue === "") {
-                    console.log("toast printing");
                     handleSnackbarStatus();
                   } else {
                     onSendData(inputValue);

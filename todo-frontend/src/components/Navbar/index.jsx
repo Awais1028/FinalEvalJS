@@ -3,7 +3,11 @@ import Filters from "../Filters";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-export default function NavBar({ handleAddNewItem, setFilterVal, resetPage }) {
+export default function NavBar({
+  handleAddNewItem,
+  setFilterValue,
+  resetPage,
+}) {
   return (
     <Box
       sx={{
@@ -19,7 +23,7 @@ export default function NavBar({ handleAddNewItem, setFilterVal, resetPage }) {
     >
       <CreateAction onSendData={handleAddNewItem} />
       <Typography variant="h4">Todo App</Typography>
-      <Filters onSendData={setFilterVal} resetPage={resetPage} />
+      <Filters onSendData={setFilterValue} resetPage={resetPage} />
     </Box>
   );
 }

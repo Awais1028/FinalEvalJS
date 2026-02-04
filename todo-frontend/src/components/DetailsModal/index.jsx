@@ -27,9 +27,7 @@ export default function DetailsModal({
       {/* The main text display */}
       <p style={{ textDecoration: completed ? "line-through" : "none" }}>
         {truncatedText}
-        {console.log(
-          `testing at the readmoretextbox ${completed} <=completed `,
-        )}
+
         {isTruncated && (
           <button
             onClick={openModal}

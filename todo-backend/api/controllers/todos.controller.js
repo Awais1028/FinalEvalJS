@@ -30,47 +30,47 @@ const deleteTodo = async (req, res) => {
   console.log("Deletion status is this", req.body.deletedAt);
   res.send(await updateDeletionStatus(req.body._id, req.body.deletedAt));
 };
-const get = async ({ filterVal, sort_by, limit, page }) => {
-  console.log(`F"${filterVal} S"${sort_by} L"${limit} P"${page}`);
-  if (filterVal === "All") {
+const get = async ({ filterValue, sort_by, limit, page }) => {
+  console.log(`F"${filterValue} S"${sort_by} L"${limit} P"${page}`);
+  if (filterValue === "All") {
     try {
       const totalItems = await Todo.countDocuments();
       console.log("TOTAL ITEMS********** = ", totalItems, "^^^^^^");
       const totalPages = Math.ceil(totalItems / limit);
-      const todos = await Todo.find()
+      const todoItems = await Todo.find()
         .sort({ [sort_by]: -1 })
         .skip((page - 1) * limit) // Skip previous pages
         .limit(limit) // Limit results per page
         .exec();
-      return { todos: todos, totalPages: totalPages };
+      return { todoItems: todoItems, totalPages: totalPages };
     } catch (err) {
       console.error(err);
     }
-  } else if (filterVal === "Active") {
+  } else if (filterValue === "Active") {
     const totalItems = await Todo.countDocuments({ deletedAt: "N/A" });
     const totalPages = Math.ceil(totalItems / limit);
-    const todos = await Todo.find({ deletedAt: "N/A" })
+    const todoItems = await Todo.find({ deletedAt: "N/A" })
       .sort({ [sort_by]: -1 })
       .skip((page - 1) * limit) // Skip previous pages
       .limit(limit) // Limit results per page
       .exec();
-    return { todos: todos, totalPages: totalPages };
-  } else if (filterVal === "Deleted") {
+    return { todoItems: todoItems, totalPages: totalPages };
+  } else if (filterValue === "Deleted") {
     const totalItems = await Todo.countDocuments({
       deletedAt: { $ne: "N/A" },
     });
     const totalPages = Math.ceil(totalItems / limit);
-    const todos = await Todo.find({ deletedAt: { $ne: "N/A" } })
+    const todoItems = await Todo.find({ deletedAt: { $ne: "N/A" } })
       .sort({ [sort_by]: -1 })
       .skip((page - 1) * limit) // Skip previous pages
       .limit(limit) // Limit results per page
       .exec();
-    return { todos: todos, totalPages: totalPages };
+    return { todoItems: todoItems, totalPages: totalPages };
   }
 };
 const getAll = async (req, res, next) => {
   const validFilters = ["All", "Active", "Deleted"];
-  const filtervalue = req.query.filterVal;
+  const filtervalue = req.query.filterValue;
   console.log("filter Value before", filtervalue);
   if (!validFilters.includes(filtervalue)) {
     console.log("entering valid check");

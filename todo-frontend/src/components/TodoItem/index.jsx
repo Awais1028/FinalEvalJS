@@ -5,45 +5,19 @@ import { formatRelativeToNow } from "../../utils/helper";
 import DetailsModal from "../DetailsModal";
 
 export default function TodoItem({
-  id,
-  description,
-  createdAt,
-  deletedAt,
-  completed,
+  todoItem,
   handleCheckBoxChange,
   handleDeleteButton,
 }) {
   return (
     <TableRow
-      key={id}
+      key={todoItem._id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell align="center">
-        <Button
-          id={`${id}CheckBoxBtn`}
-          variant={
-            deletedAt === "N/A"
-              ? completed
-                ? "contained"
-                : "outlined"
-              : "contained"
-          }
-          color={completed ? "success" : "secondary"}
-          onClick={() => handleCheckBoxChange(id)}
-          disabled={deletedAt === "N/A" ? false : true}
-        >
-          {deletedAt === "N/A"
-            ? completed
-              ? "Completed"
-              : "Push to Complete"
-            : "Disabled"}
-        </Button>
-      </TableCell>
-
       <TableCell sx={{ width: "700px" }} component="th" scope="row">
         <DetailsModal
-          completed={deletedAt === "N/A" ? completed : false}
-          text={description}
+          completed={todoItem.deletedAt === "N/A" ? todoItem.completed : false}
+          text={todoItem.description}
         ></DetailsModal>
       </TableCell>
       <TableCell
@@ -52,20 +26,43 @@ export default function TodoItem({
           width: "100px",
         }}
       >
-        {formatRelativeToNow(createdAt)}
+        {formatRelativeToNow(todoItem.createdAt)}
       </TableCell>
       <TableCell align="center">
-        {deletedAt === "N/A" ? "Not Yet" : formatRelativeToNow(deletedAt)}
+        {todoItem.deletedAt === "N/A"
+          ? "Not Yet"
+          : formatRelativeToNow(todoItem.deletedAt)}
+      </TableCell>
+      <TableCell align="center">
+        <Button
+          id={`${todoItem._id}CheckBoxBtn`}
+          variant={
+            todoItem.deletedAt === "N/A"
+              ? todoItem.completed
+                ? "contained"
+                : "outlined"
+              : "contained"
+          }
+          color={todoItem.completed ? "success" : "secondary"}
+          onClick={() => handleCheckBoxChange(todoItem._id)}
+          disabled={todoItem.deletedAt === "N/A" ? false : true}
+        >
+          {todoItem.deletedAt === "N/A"
+            ? todoItem.completed
+              ? "Completed"
+              : "Push to Complete"
+            : "Disabled"}
+        </Button>
       </TableCell>
       <TableCell align="center">
         <Button
           variant="contained"
           color="error"
-          id={`${id}DelBtn`}
-          onClick={() => handleDeleteButton(id)}
-          disabled={deletedAt !== "N/A" ? true : false}
+          id={`${todoItem._id}DelBtn`}
+          onClick={() => handleDeleteButton(todoItem._id)}
+          disabled={todoItem.deletedAt !== "N/A" ? true : false}
         >
-          {deletedAt === "N/A" ? "DELETE" : "DELETED"}
+          {todoItem.deletedAt === "N/A" ? "DELETE" : "DELETED"}
         </Button>
       </TableCell>
     </TableRow>
