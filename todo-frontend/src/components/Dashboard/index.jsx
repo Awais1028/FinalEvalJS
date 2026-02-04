@@ -7,15 +7,19 @@ import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import TableHead from "@mui/material/TableHead";
 import Navbar from "../Navbar";
-import Pagination from "../DashboardPagination";
+import DashboardPagination from "../DashboardPagination";
 import AlertDialog from "../AlertDialog";
 import { useTodoItems } from "./hooks/useTodoItems";
+import { useDashboardPagination } from "./hooks/useDashboardPagination";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 
 export default function Dashboard() {
   const [alert, setAlert] = useState("");
   const [alertType, setAlertType] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [filterValue, setFilterValue] = useState("All");
+
+  const { currentPage, handlePageChange, resetPage } = useDashboardPagination();
 
   const {
     isLoading,
@@ -26,30 +30,22 @@ export default function Dashboard() {
     handleTodoDeletion,
   } = useTodoItems(filterValue, currentPage, setAlert, setAlertType);
 
-  //Reset Current Page to 1st Page
-  const resetPage = () => {
-    setCurrentPage(1);
-  };
-
-  //Update Current Page Value
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
-
-  //UseEffects
-  if (isLoading) return <h3>isLoading.......</h3>;
+  if (isLoading)
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
 
   return (
     <>
-      {alert !== "" ? (
+      {alert && (
         <AlertDialog
           type={alertType}
           message={alert}
           setAlert={setAlert}
           setAlertType={setAlertType}
         ></AlertDialog>
-      ) : (
-        ""
       )}
 
       <Navbar
@@ -72,7 +68,7 @@ export default function Dashboard() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination
+      <DashboardPagination
         count={pagesCount}
         page={currentPage}
         onChange={handlePageChange}

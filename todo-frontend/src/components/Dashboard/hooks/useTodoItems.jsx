@@ -141,7 +141,5 @@ export function useTodoItems(filterValue, currentPage, setAlert, setAlertType) {
     handleAddNewItem,
     handleTodoStatusChange,
     handleTodoDeletion,
-    setAlert,
-    setAlertType,
   };
 }

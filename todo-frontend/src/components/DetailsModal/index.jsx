@@ -21,11 +21,24 @@ export default function DetailsModal({
       style={{
         padding: "10px",
         margin: "10px",
+        paddingTop: "1px",
+        paddingBottom: "1px",
+        marginTop: "1px",
+        marginBottom: "1px",
         whiteSpace: "pre-wrap",
+        fontSize: "0.8rem",
       }}
     >
       {/* The main text display */}
-      <p style={{ textDecoration: completed ? "line-through" : "none" }}>
+      <p
+        style={{
+          textDecoration: completed ? "line-through" : "none",
+          marginTop: "1px",
+          marginBottom: "1px",
+          height: "50px",
+          alignContent: "center",
+        }}
+      >
         {truncatedText}
 
         {isTruncated && (
